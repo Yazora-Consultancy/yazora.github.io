@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yazora Consultancy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Basic body styling */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom gradient for hero and contact sections */
+        .game-gradient {
+            background: linear-gradient(to bottom, #16a38a, #10b981); /* Seafoam Green to Aquamarine */
+        }
+        /* Hover state for gradient elements (if needed) */
+        .game-gradient-hover {
+             background: linear-gradient(to bottom, #149174, #0e9f6e);
+        }
+
+        /* Popup Styles */
+        .popup {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
+        }
+
+        /* Popup Modal Content */
+        .popup-content {
+            background-color: #fff; /* White background */
+            color: #333; /* Dark text for readability */
+            margin: 10% auto; /* 10% from the top and centered */
+            padding: 20px;
+            border-radius: 12px; /* Rounded corners */
+            border: 1px solid #888; /* Subtle border */
+            width: 90%; /* Responsive width */
+            max-width: 400px; /* Max width for larger screens */
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Drop shadow */
+            animation: fadeIn 0.3s; /* Fade-in animation */
+        }
+
+        /* Fade-in Animation */
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(-50px);} /* Start transparent and slightly above */
+            to {opacity: 1; transform: translateY(0);} /* Fade in and slide down */
+        }
+
+        /* Popup Header */
+        .popup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd; /* Separator line */
+        }
+
+        .popup-header h2 {
+            margin: 0;
+            color: #333; /* Dark header text */
+            font-size: 1.8rem; /* Larger heading */
+        }
+
+        /* Close Button ('x') */
+        .close-button {
+            position: absolute; /* Position relative to popup-content */
+            top: 10px;
+            right: 10px;
+            color: #aaa; /* Light gray color */
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none; /* No border */
+            background: transparent; /* No background */
+            padding: 0; /* No padding */
+            line-height: 1; /* Align 'x' properly */
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: #000; /* Darken on hover/focus */
+            text-decoration: none;
+        }
+
+        /* Popup Body */
+        .popup-body {
+            margin-bottom: 20px; /* Space below the body content */
+        }
+
+        .popup-body p {
+            color: #555; /* Slightly lighter text for description */
+            margin-bottom: 15px;
+            text-align: center; /* Center the text now that inputs are gone */
+        }
+
+        /* Removed Input Field Styles as they are no longer needed */
+
+        /* Popup Footer */
+        .popup-footer {
+            text-align: center;
+            display: flex;
+            justify-content: center; /* Center button(s) */
+            gap: 10px; /* Space between buttons if more than one */
+            margin-top: 15px; /* Space above the footer */
+        }
+
+        /* General Button Styling in Footer */
+        .popup-footer button, .popup-footer a {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+            display: inline-flex; /* Align icon and text if needed */
+            align-items: center;
+            justify-content: center;
+            text-decoration: none; /* Remove underline from links styled as buttons */
+        }
+
+        /* Specific Button Hover Effects */
+        .popup-footer button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        .popup-footer a:hover {
+             /* Handled by .calendly-button:hover */
+        }
+
+        /* Calendly Link Button Styling */
+        .calendly-button {
+            background-color: #007bff;  /* Blue background */
+            color: white; /* White text */
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+        }
+
+        .calendly-button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+            color: white; /* Ensure text remains white */
+        }
+
+         /* Custom Aquamarine color definition for Tailwind */
+        .text-aquamarine {
+            color: #7fffd4; /* Aquamarine hex code */
+        }
+        /* Hover state for Aquamarine text */
+        .hover\:text-aquamarine:hover {
+            color: #7fffd4;
+        }
+
+        /* Active state for navigation links */
+        .nav-link-active {
+             color: #7fffd4 !important; /* Use !important to override base styles if needed */
+             font-weight: 600; /* Make active link slightly bolder */
+        }
+
+    </style>
+     <script>
+        // Add custom color and potentially other customizations to Tailwind config
+        // This ensures Tailwind is aware of the 'aquamarine' color for utility classes
+        tailwind.config = {
+          theme: {
+            extend: {
+              colors: {
+                aquamarine: '#7fffd4', // Define aquamarine color
+              }
+            }
+          }
+        }
+      </script>
+</head>
+<body class="bg-gray-900 text-white">
+
+    <header class="bg-gray-800 bg-opacity-90 shadow-md py-4 sticky top-0 z-40">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <h1 class="text-2xl font-semibold text-white">Yazora Consultancy</h1>
+            <nav class="hidden md:block nav-links">
+                <ul class="flex space-x-6">
+                    <li><a href="#about" class="text-gray-300 hover:text-aquamarine transition duration-300">About</a></li>
+                    <li><a href="#services" class="text-gray-300 hover:text-aquamarine transition duration-300">Services</a></li>
+                    <li><a href="#projects" class="text-gray-300 hover:text-aquamarine transition duration-300">Projects</a></li>
+                    <li><a href="#contact" class="text-gray-300 hover:text-aquamarine transition duration-300">Contact</a></li>
+                </ul>
+            </nav>
+            <button id="hamburger-btn" class="md:hidden text-gray-300 focus:outline-none" aria-label="Toggle Navigation">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <div id="mobile-menu" class="hidden fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-95 z-50">
+        <div class="bg-gray-800 w-80 h-full absolute right-0 p-6 shadow-lg">
+            <div class="flex justify-end mb-6">
+                <button id="close-menu-btn" class="text-gray-300 focus:outline-none" aria-label="Close Navigation">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <nav class="block">
+                <ul class="space-y-4">
+                    <li><a href="#about" class="block text-lg text-gray-300 hover:text-aquamarine transition duration-300">About</a></li>
+                    <li><a href="#services" class="block text-lg text-gray-300 hover:text-aquamarine transition duration-300">Services</a></li>
+                    <li><a href="#projects" class="block text-lg text-gray-300 hover:text-aquamarine transition duration-300">Projects</a></li>
+                    <li><a href="#contact" class="block text-lg text-gray-300 hover:text-aquamarine transition duration-300">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+<main>
+        <section id="hero" class="game-gradient text-white py-20 md:py-32">
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="text-4xl md:text-5xl font-semibold mb-4 md:mb-6">Empowering Startups & Businesses Across Industries with Strategic Project Leadership</h2>
+                <p class="text-lg md:text-xl mb-8 md:mb-12 max-w-3xl mx-auto">Yazora is your partner in business excellence. From innovative gaming studios to ambitious startups and scaling enterprises, we provide comprehensive project management, strategic planning, and end-to-end consultancy services designed to drive success across industries and markets.</p>
+                <a href="#" id="open-popup-btn" class="bg-white text-gray-900 font-semibold py-3 px-8 rounded-full transition duration-300 hover:bg-gray-200 hover:scale-105 inline-block shadow-md">Book a Free Consultation</a>
+            </div>
+        </section>
+
+        <section class="py-16 bg-gray-900 text-white text-center">
+            <div class="container mx-auto px-4">
+                <h3 class="text-3xl font-semibold mb-4">Strategic Project Management Solutions</h3>
+                <p class="max-w-3xl mx-auto text-lg">At Yazora, we support gaming startups and emerging businesses with expert production planning, agile project oversight, and customized strategies that align with your creative and operational goals. Whether you're launching your first title or scaling a new venture, we help you manage complexity with confidence.</p>
+            </div>
+        </section>
+
+        <section class="py-16 bg-gray-800 text-white text-center">
+            <div class="container mx-auto px-4">
+                <h3 class="text-3xl font-semibold mb-4">Yazora: Driving Success for Game Startups and New Ventures</h3>
+                <p class="max-w-3xl mx-auto text-lg">We provide end-to-end project management and production planning services tailored to the unique demands of the gaming industry and early-stage businesses, ensuring clarity, efficiency, and growth from concept to launch.</p>
+            </div>
+        </section>
+
+        <section id="about" class="bg-gray-800 py-16 md:py-20">
+            <div class="container mx-auto px-4 md:px-6">
+                <h2 class="text-3xl md:text-4xl font-semibold text-white text-center mb-10 md:mb-16">About Yazora Business & Game Consultancy</h2>
+                <div class="grid md:grid-cols-2 gap-10 md:gap-16 items-start">
+                    <div class="space-y-6">
+                        <p class="text-gray-300 text-lg leading-relaxed">Through Yazora Business and Game Consultancy, I, Chandan Sahu, bring over <strong>8 years</strong> of hands-on experience in mobile game production, PC & Console game development insights, and strategic project management to empower gaming studios and a diverse range of businesses in realizing their creative visions and achieving sustainable growth across all platforms and industries.</p>
+                        <p class="text-gray-300 text-lg leading-relaxed">We possess a deep understanding of the distinct hurdles within the dynamic gaming landscape, catering to everyone from independent developers crafting innovative mobile gaming apps and indie PC titles to established studios pushing industry boundaries on consoles. Our passion lies in delivering the expert guidance and unwavering support necessary for you to develop exceptional games across the thriving mobile, PC, and Console markets.</p>
+                        <p class="text-gray-300 text-lg leading-relaxed">Beyond the gaming realm, Yazora extends its strategic project management expertise to support various business entities. We provide crucial business planning, effective team structuring, optimized resource allocation, and well-defined growth strategies for Companies, Firms, Enterprises, Organizations, and Undertakings seeking strategic direction and a solid foundation for success in any industry.</p>
+                    </div>
+                    <div class="space-y-8">
+                        <div>
+                            <h3 class="text-2xl font-semibold text-aquamarine mb-4">What We Do</h3>
+                            <ul class="list-disc list-inside space-y-3 text-gray-300 text-lg">
+                                <li><span class="font-semibold text-white">For Game Studios (Mobile, PC & Console):</span> We offer comprehensive support encompassing game development strategies tailored for mobile games, PC, and Console platforms, meticulous milestone planning, efficient vendor management, seamless cross-team coordination, and robust liveOps management to ensure long-term success for your mobile gaming apps, PC releases, and console titles.</li>
+                                <li><span class="font-semibold text-white">For Companies, Firms, Enterprises, Organizations, and Undertakings:</span> Yazora provides expert project management services including crucial business planning, effective team structuring, optimized resource allocation, and well-defined growth strategies to streamline operations, enhance efficiency, and drive success across diverse sectors.</li>
+                            </ul>
+                        </div>
+                         <div>
+                            <h3 class="text-2xl font-semibold text-aquamarine mt-6 mb-4">Key Values</h3>
+                            <ul class="list-disc list-inside space-y-3 text-gray-300 text-lg">
+                                <li><span class="font-semibold text-white">Agile Management:</span> We champion flexible and scalable project approaches, ensuring adaptability in today's rapidly evolving markets for both game development (across all platforms) and general business ventures.</li>
+                                <li><span class="font-semibold text-white">Tailored Solutions:</span> Recognizing the unique identity of every studio and business entity, we deliver personalized roadmaps and strategies designed to meet your specific objectives, whether you're developing a mobile game, a PC title, a console experience, or leading a Company, Firm, Enterprise, Organization, or Undertaking.</li>
+                                <li><span class="font-semibold text-white">End-to-End Support:</span> From the initial stages of pre-production and business conceptualization to achieving post-launch success and sustained growth, we are your dedicated partners every step of the way, whether you're launching a mobile game, a PC game, a console game, or guiding a Company, Firm, Enterprise, Organization, or Undertaking.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="services" class="bg-gray-900 py-16 md:py-20">
+            <div class="container mx-auto px-4 md:px-6">
+                <h2 class="text-3xl md:text-4xl font-semibold text-white text-center mb-10 md:mb-16">Our Services</h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+                    <div class="bg-gray-800 rounded-lg shadow-lg p-6 md:p-8 hover:shadow-xl transition duration-300 transform hover:-translate-y-1">
+                        <h3 class="text-xl font-semibold text-aquamarine mb-4">Game Production Management</h3>
+                        <p class="text-gray-300 text-lg">End-to-end production oversight, roadmap planning, milestone tracking, risk management, and process optimization to keep your development on track.</p>
+                    </div>
+                    <div class="bg-gray-800 rounded-lg shadow-lg p-6 md:p-8 hover:shadow-xl transition duration-300 transform hover:-translate-y-1">
+                        <h3 class="text-xl font-semibold text-aquamarine mb-4">LiveOps Strategy & Optimization</h3>
+                        <p class="text-gray-300 text-lg">Maximize player engagement, retention, and revenue with data-driven LiveOps strategies, event planning, and performance analysis.</p>
+                    </div>
+                    <div class="bg-gray-800 rounded-lg shadow-lg p-6 md:p-8 hover:shadow-xl transition duration-300 transform hover:-translate-y-1">
+                        <h3 class="text-xl font-semibold text-aquamarine mb-4">Team Leadership & Coordination</h3>
+                        <p class="text-gray-300 text-lg">Building, mentoring, and managing high-performing development teams. Fostering effective communication and collaboration across disciplines.</p>
+                    </div>
+                    <div class="bg-gray-800 rounded-lg shadow-lg p-6 md:p-8 hover:shadow-xl transition duration-300 transform hover:-translate-y-1">
+                         <h3 class="text-xl font-semibold text-aquamarine mb-4">Vendor & Stakeholder Management</h3>
+                         <p class="text-gray-300 text-lg">Ensuring smooth collaboration and clear communication with external partners, publishers, investors, and other key stakeholders.</p>
+                    </div>
+                    <div class="bg-gray-800 rounded-lg shadow-lg p-6 md:p-8 hover:shadow-xl transition duration-300 transform hover:-translate-y-1">
+                        <h3 class="text-xl font-semibold text-aquamarine mb-4">Startup Business Planning</h3>
+                        <p class="text-gray-300 text-lg">Assisting new gaming ventures with business model development, team structuring, resource planning, and investment readiness.</p>
+                    </div>
+                     <div class="bg-gray-800 rounded-lg shadow-lg p-6 md:p-8 hover:shadow-xl transition duration-300 transform hover:-translate-y-1">
+                        <h3 class="text-xl font-semibold text-aquamarine mb-4">Agile Coaching & Implementation</h3>
+                        <p class="text-gray-300 text-lg">Implementing or refining Agile/Scrum methodologies within your studio to improve workflow efficiency and adaptability.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="why-choose-us" class="bg-gray-800 py-16 md:py-20">
+            <div class="container mx-auto px-4 md:px-6">
+                <h2 class="text-3xl md:text-4xl font-semibold text-white text-center mb-10 md:mb-16">Why Partner with Yazora?</h2>
+                <div class="max-w-3xl mx-auto">
+                    <ul class="list-none space-y-6 text-center">
+                        <li class="text-lg text-gray-300"><strong class="text-white block text-xl mb-1">Proven Success:</strong> Experience leading diverse game projects from concept to launch and beyond.</li>
+                        <li class="text-lg text-gray-300"><strong class="text-white block text-xl mb-1">Industry Expertise:</strong> Deep understanding of the gaming landscape, market trends, and development challenges.</li>
+                        <li class="text-lg text-gray-300"><strong class="text-white block text-xl mb-1">Tailored Guidance:</strong> Strategic advice and hands-on support focused on your studio's specific needs and goals.</li>
+                         <li class="text-lg text-gray-300"><strong class="text-white block text-xl mb-1">Focus on Execution:</strong> Helping you turn vision into reality with practical planning and management.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="bg-gray-900 py-16 md:py-20">
+            <div class="container mx-auto px-4 md:px-6">
+                <h2 class="text-3xl md:text-4xl font-semibold text-white text-center mb-10 md:mb-16">Recent Projects & Clients</h2>
+                <div class="grid md:grid-cols-2 gap-10 md:gap-16">
+                    <div>
+                        <h3 class="text-2xl font-semibold text-aquamarine mb-5 text-center md:text-left">Game Projects</h3>
+                        <ul class="list-disc list-inside space-y-3 text-gray-300 text-lg marker:text-aquamarine">
+                            <li>Deathsprint66 – Sumo Digital</li>
+                            <li>Critter Café – Sumo Digital</li>
+                            <li>Chef Diary: Cooking Games - Cympl Studios</li>
+                            <li>Terraria Mobile (Production Support) – SunTechnologies</li>
+                            <li>Confidential AAA Title (LiveOps) - Major Publisher</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-semibold text-aquamarine mb-5 text-center md:text-left">Business & Startup Consulting</h3>
+                        <ul class="list-disc list-inside space-y-3 text-gray-300 text-lg marker:text-aquamarine">
+                            <li>Accurate Facts Management Services (Project Setup)</li>
+                            <li>Rootz Management Services (Operational Planning)</li>
+                            <li>Indie Studio Alpha (Business Plan Development)</li>
+                            <li>Gaming Startup Beta (Team Structure Advisory)</li>
+                        </ul>
+                    </div>
+                </div>
+                 <p class="text-center text-gray-400 mt-12 italic">Note: Some client names and project details may be confidential.</p>
+            </div>
+        </section>
+
+        <section id="contact" class="game-gradient text-white py-16 md:py-24">
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="text-3xl md:text-4xl font-semibold mb-6 md:mb-10">Ready to Level Up Your Game Development?</h2>
+                <p class="text-lg md:text-xl mb-8 md:mb-12 max-w-2xl mx-auto">Let's discuss how Yazora Consultancy can help your studio achieve its goals. Book a free, no-obligation consultation today.</p>
+                <a href="#" id="open-popup-btn-2" class="bg-white text-gray-900 font-semibold py-3 px-8 rounded-full transition duration-300 hover:bg-gray-200 hover:scale-105 inline-block shadow-md text-lg">Schedule Your Free Consultation</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-gray-400 py-8">
+        <div class="container mx-auto px-4 text-center md:flex justify-between items-center">
+            <p class="mb-4 md:mb-0">&copy; <span id="current-year"></span> Yazora Business and Game Consultancy | Bangalore, India</p>
+            <div class="flex justify-center md:justify-start space-x-6">
+                <a href="https://www.linkedin.com/in/yazor-business-and-game-consultancy-889352363/" target="_blank" rel="noopener noreferrer" class="hover:text-aquamarine transition duration-300" aria-label="LinkedIn Profile">LinkedIn</a>
+                <a href="mailto:yazora.consultancy@gmail.com" class="hover:text-aquamarine transition duration-300" aria-label="Email Yazora Consultancy">Email</a>
+                </div>
+        </div>
+    </footer>
+
+    <div id="booking-popup" class="popup">
+        <div class="popup-content">
+            <div class="popup-header">
+                <h2>Book a Consultation</h2>
+                <button id="close-popup-btn" class="close-button" aria-label="Close Popup">&times;</button>
+            </div>
+            <div class="popup-body">
+                <p>Click the button below to schedule your free consultation directly via DaySchedule.</p>
+                </div>
+            <div class="popup-footer">
+                <a href="https://chandan-sahu.dayschedule.com/yazora-consultancy-service-enquiry" target="_blank" rel="noopener noreferrer" class="calendly-button">Book directly via DaySchedule</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Element References
+        const hamburgerBtn = document.getElementById("hamburger-btn");
+        const mobileMenu = document.getElementById("mobile-menu");
+        const closeMenuBtn = document.getElementById("close-menu-btn");
+        const mobileMenuLinks = mobileMenu.querySelectorAll("a");
+        const desktopNavLinks = document.querySelectorAll('header nav a'); // Desktop links
+        const sections = document.querySelectorAll('section[id]'); // Sections with IDs for scroll spying
+        const openPopupBtn = document.getElementById("open-popup-btn");
+        const openPopupBtn2 = document.getElementById("open-popup-btn-2");
+        const bookingPopup = document.getElementById("booking-popup");
+        const closePopupBtn = document.getElementById("close-popup-btn");
+        // Removed nameInput, emailInput, phoneInput as they are no longer in the HTML
+        const currentYearSpan = document.getElementById('current-year');
+
+        // --- Mobile Menu Functionality ---
+
+        // Function to toggle mobile menu visibility
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle("hidden");
+            // Optional: Prevent body scroll when menu is open
+            // document.body.style.overflow = mobileMenu.classList.contains('hidden') ? '' : 'hidden';
+        }
+
+        // Event listeners for opening and closing mobile menu
+        hamburgerBtn.addEventListener("click", toggleMobileMenu);
+        closeMenuBtn.addEventListener("click", toggleMobileMenu);
+
+        // Add click listener to each mobile menu link to close the menu
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener("click", () => {
+                // Add a small delay if needed for smooth scroll to start before closing
+                // setTimeout(toggleMobileMenu, 100);
+                toggleMobileMenu(); // Close immediately
+            });
+        });
+
+        // Close mobile menu if clicking outside of the menu area
+        document.addEventListener('click', (event) => {
+            // Check if the menu is open, the click target is not the menu itself or its descendants,
+            // and the click target is not the hamburger button or its descendants
+            if (!mobileMenu.classList.contains('hidden') &&
+                !mobileMenu.contains(event.target) &&
+                !hamburgerBtn.contains(event.target)) {
+                 toggleMobileMenu();
+            }
+        });
+
+         // --- Active Navigation Link Highlighting (Scroll Spy) ---
+
+        // Function to update active nav link based on scroll position
+        function updateActiveNavLink() {
+          let currentSectionId = '';
+          const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+          // Offset to account for the sticky header height (adjust as needed)
+          const headerHeightOffset = 80;
+
+          sections.forEach(section => {
+            const sectionTop = section.offsetTop - headerHeightOffset;
+            const sectionHeight = section.offsetHeight;
+            // Check if current scroll position is within the section's bounds
+            if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+              currentSectionId = section.getAttribute('id');
+            }
+          });
+
+          // Update desktop navigation links
+          desktopNavLinks.forEach(link => {
+            link.classList.remove('nav-link-active', 'text-aquamarine'); // Remove active styles
+            link.classList.add('text-gray-300'); // Ensure default style
+            // Add active styles if the link's href matches the current section
+            if (link.getAttribute('href') === `#${currentSectionId}`) {
+                link.classList.remove('text-gray-300');
+                link.classList.add('nav-link-active', 'text-aquamarine');
+            }
+          });
+
+          // Update mobile navigation links (similar logic)
+          mobileMenuLinks.forEach(link => {
+            link.classList.remove('nav-link-active', 'text-aquamarine');
+            link.classList.add('text-gray-300');
+            if (link.getAttribute('href') === `#${currentSectionId}`) {
+                link.classList.remove('text-gray-300');
+                link.classList.add('nav-link-active', 'text-aquamarine');
+            }
+          });
+        }
+
+        // Add scroll and load event listeners for active link highlighting
+        window.addEventListener('scroll', updateActiveNavLink);
+        window.addEventListener('load', updateActiveNavLink); // Initial check on page load
+
+
+        // --- Smooth Scrolling for Anchor Links ---
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault(); // Prevent default jump behavior
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+
+                if (targetElement) {
+                  // Calculate position considering sticky header height
+                  const headerOffset = 70; // Adjust based on your header's actual height
+                  const elementPosition = targetElement.getBoundingClientRect().top;
+                  const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                  // Perform smooth scroll
+                  window.scrollTo({
+                       top: offsetPosition,
+                       behavior: "smooth"
+                  });
+                }
+            });
+        });
+
+        // --- Booking Popup Functionality ---
+
+        // Function to open the booking popup
+        function openBookingPopup(event) {
+            if (event) event.preventDefault(); // Prevent default anchor behavior if triggered by a link
+            bookingPopup.style.display = "block";
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        // Function to close the booking popup
+        function closeBookingPopup() {
+            // Optional: Add fade-out animation class before hiding
+            // bookingPopup.classList.add('fade-out-animation');
+            // setTimeout(() => {
+                bookingPopup.style.display = "none";
+                document.body.style.overflow = ''; // Allow background scrolling
+                // bookingPopup.classList.remove('fade-out-animation');
+            // }, 300); // Match animation duration
+        }
+
+        // Event listeners for opening the popup
+        if(openPopupBtn) openPopupBtn.addEventListener("click", openBookingPopup);
+        if(openPopupBtn2) openPopupBtn2.addEventListener("click", openBookingPopup);
+
+        // Event listener for closing the popup with the close button
+        if(closePopupBtn) closePopupBtn.addEventListener("click", closeBookingPopup);
+
+        // Event listener for closing the popup by clicking outside the content area
+        window.addEventListener('click', (event) => {
+            if (event.target === bookingPopup) { // Check if the click is directly on the background overlay
+                closeBookingPopup();
+            }
+        });
+
+        // Event listener for closing the popup with the Escape key
+        window.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && bookingPopup.style.display === 'block') {
+                closeBookingPopup();
+            }
+        });
+
+
+        // --- Input Field Handling Removed ---
+
+
+        // --- Footer Current Year ---
+        // Set the current year in the footer
+        if (currentYearSpan) {
+            currentYearSpan.textContent = new Date().getFullYear();
+        }
+
+    </script>
+</body>
+</html>

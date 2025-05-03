@@ -1,0 +1,109 @@
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+.game-gradient {
+    background: linear-gradient(to bottom, #16a38a, #10b981);
+}
+
+.game-gradient-hover {
+     background: linear-gradient(to bottom, #149174, #0e9f6e);
+}
+
+.text-aquamarine {
+    color: #7fffd4;
+}
+
+.hover\:text-aquamarine:hover {
+    color: #7fffd4;
+}
+
+.nav-link-active {
+     color: #7fffd4 !important;
+     font-weight: 600;
+}
+
+#hero {
+    background: linear-gradient(to bottom, #16a38a, #10b981);
+    color: white;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+button {
+    cursor: pointer;
+}
+
+.bg-gray-800 {
+    background-color: #2d2d2d;
+}
+
+.bg-gray-900 {
+    background-color: #1a1a1a;
+}
+
+.text-white {
+    color: #ffffff;
+}
+
+.text-gray-300 {
+    color: #d1d5db;
+}
+
+.text-gray-900 {
+    color: #111827;
+}
+
+.shadow-md {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.transition {
+    transition: all 0.3s ease;
+}
+
+.duration-300 {
+    transition-duration: 300ms;
+}
+
+.bg-white {
+    background-color: white;
+}
+
+.font-semibold {
+    font-weight: 600;
+}
+
+.px-4, .px-8 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.py-3, .py-4 {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+}
+
+.rounded-full {
+    border-radius: 9999px;
+}
+
+.max-w-3xl {
+    max-width: 48rem;
+}
+
+.m-auto {
+    margin: 0 auto;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.hover\:scale-105:hover {
+    transform: scale(1.05);
+}
